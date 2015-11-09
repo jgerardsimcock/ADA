@@ -20,7 +20,26 @@ def merge(a,b):
   c += a[i:]# this appends the final value once the while condition ends
   c += b[j:]# this appends the final value once the while condition ends
 
-  print c
+  return c
+
+  def merge_sort(sequence):
+    """We run a recursive function call on this to break the merge_sort problem into smaller subroutines
+    Then we merge upward until all the smaller units are properly sorted"""
+
+    #We need a base case
+    if len(sequence) == 1:
+      return sequence
+
+    else: 
+
+      #we need to split into two sub sequences
+      mid = int(len(sequence)/2) 
+      head = merge_sort(seq[:mid])#first half of sequence
+      tail = merge_sort(seq[mid:])#second half of sequence
+
+      return merge(head,tail)
+
+
 
 
 
