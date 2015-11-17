@@ -1,45 +1,55 @@
-def merge(a,b):
-  """This function merges two sorted lists. This is the part of the 
-  algorithm that recombines the list and requires most of the creativity.
-  We need to check to see if the value in index i of list a is less than value in index j of list b
-  if so then we append to larger list, other wise we have to invert and append j to c. From whichever
-  list we append from we need to increment the index up one."""
+def merge(a, b):
+  """Take two sequences as unordered lists and orders them lowest to highest"""
 
-  i, j = 0, 0
-  c = []
+  #We need index values to for each array
+  i,j = 0, 0
+  #We need an empty list to store the merged sequence
+  c =[]
+  inversions = 0
 
+  #Iterate through each position in each array 
   while i < len(a) and j < len(b):
-    if a[i] < b[j]:
-      c.append(a[i])
-      i += 1
-    else:
-      c.append(b[j])
-      j += 1
+
+      if a[i] < b[j]:
+        c.append(a[i])
+        i += 1 #increment to next index value in a
+
+      else:
+        c.append(b[j])# be must be less and there is an inversion
+        j +=1 
+        inversions += len(a[i:])
+
+  
+  #once one list reaches its maximum the other array will still
+  #have values left in it. We need to concatenate the remaining values to c
+
+  c += a[i:]
+  c += b[j:]
+
+  print c, inversions
+  return c, inversions
 
 
-  c += a[i:]# this appends the final value once the while condition ends
-  c += b[j:]# this appends the final value once the while condition ends
+def merge_sort(sequence):
+  """Here we split and combine"""
 
-  return c
+  if len(sequence) == 1:
+    return sequence, 0
 
-  def merge_sort(sequence):
-    """We run a recursive function call on this to break the merge_sort problem into smaller subroutines
-    Then we merge upward until all the smaller units are properly sorted"""
+  else: 
 
-    #We need a base case
-    if len(sequence) == 1:
-      return sequence
+    mid = len(sequence)/2
+    head, s1 = merge_sort(sequence[:mid])
+    tail, s2 = merge_sort(sequence[mid:])
 
-    else: 
-
-      #we need to split into two sub sequences
-      mid = int(len(sequence)/2) 
-      head = merge_sort(seq[:mid])#first half of sequence
-      tail = merge_sort(seq[mid:])#second half of sequence
-
-      return merge(head,tail)
+    sorted_list, s3 = merge(head, tail)
+    return sorted_list, (s1+s2+s3)
 
 
+with open('data.txt') as f:
+    alist = f.read().splitlines()
+alist = [int(i) for i in alist]
 
+#let's test
 
-
+print merge_sort(alist)
